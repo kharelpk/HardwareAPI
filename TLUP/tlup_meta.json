@@ -1,0 +1,13 @@
+{
+    "name": "UPLED",
+    "category":"Light Sources",
+    "subcategory": "Controllers",
+    "manufacturer": "Thorlabs",
+    "description": "Constant Current USB-Controlled LED Driver",
+    "model": "upSeries",
+    "application": "OEM",
+    "communication": "USB 2.0",
+    "manual": "https://www.thorlabs.com/thorproduct.cfm?partnumber=UPLED",
+    "driver":"tlup.py",
+    "info_file":"tlup_demo.md"
+}

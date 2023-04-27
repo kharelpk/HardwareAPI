@@ -15,7 +15,8 @@ ViPReal64 = ctypes.POINTER(ctypes.c_double)
 ViInt16 = ctypes.c_int16
 ViInt32 = ctypes.c_int32
 ViPInt32 = ctypes.POINTER(ctypes.c_int32)
-
+ViReal32 = ctypes.c_float
+ViUInt16 = ctypes.c_uint16
 
 
 class DLLWrapper:
@@ -39,13 +40,13 @@ class TLUP(DLLWrapper):
 
         self._bind_functions([
             ("TLUP_init", [ViRsrc, ViBoolean, ViBoolean, ViPSession], ViStatus),
-            ("TLUP_findRsrc", [ViSession, ViPUInt32], ViStatus),
-            ("TLUP_getRsrcInfo", [ViSession, ViUInt32, ctypes.POINTER(ViChar), ctypes.POINTER(ViChar), ctypes.POINTER(ViChar), ctypes.POINTER(ViBoolean)], ViStatus),
-            ("TLUP_getRsrcName", [ViSession, ViUInt32, ctypes.POINTER(ViChar)], ViStatus),
-            ("TLUP_measDeviceTemperature", [ViSession, ViPReal64], ViStatus),
-            ("TLUP_setLedCurrentSetpoint", [ViSession, ViReal64],ViStatus),
             ("TLUP_close", [ViSession], ViStatus),
             ("TLUP_errorMessage", [ViSession, ViStatus, ctypes.POINTER(ViChar)], ViStatus),
+            ("TLUP_findRsrc", [ViSession, ViPUInt32], ViStatus),
+            ("TLUP_getRsrcInfo", [ViSession, ViUInt32, ctypes.POINTER(ViChar), ctypes.POINTER(ViChar), ctypes.POINTER(ViChar), ctypes.POINTER(ViBoolean)], ViStatus),
+            ("TLUP_measDeviceTemperature", [ViSession, ViPReal64], ViStatus),
+            ("TLUP_switchLedOutput", [ViSession , ViBoolean], ViStatus),
+            ("TLUP_setLedCurrentSetpoint", [ViSession, ViReal64],ViStatus),
         ])
 
     def init(self, resource_name: str, id_query: bool, reset_device: bool) -> int:
@@ -87,7 +88,7 @@ class TLUP(DLLWrapper):
         :raises NameError: If there is an error during the close operation.
         """
         status = self._dll.TLUP_close(ViSession(instrument_handle))
-        self.__test_for_error(instrument_handle, status)
+        self.__test_for_error(ViSession(instrument_handle), status)
         return None
 
     
@@ -111,7 +112,7 @@ class TLUP(DLLWrapper):
         status = self._dll.TLUP_findRsrc(ViSession(instrument_handle),
                                          ctypes.byref(resource_count))
 
-        self.__test_for_error(instrument_handle, status)
+        self.__test_for_error(ViSession(instrument_handle), status)
         return resource_count.value
     
     
@@ -139,9 +140,9 @@ class TLUP(DLLWrapper):
 
         status = self._dll.TLUP_getRsrcInfo(ViSession(instrument_handle),
                                             ViUInt32(index),
-                                            ctypes.byref(model_name),
-                                            ctypes.byref(serial_number),
-                                            ctypes.byref(manufacturer),
+                                            model_name,
+                                            serial_number,
+                                            manufacturer,
                                             ctypes.byref(resource_available))
 
         self.__test_for_error(instrument_handle, status)
@@ -150,31 +151,7 @@ class TLUP(DLLWrapper):
                 manufacturer.value.decode(),
                 bool(resource_available.value))
 
-    
-    def get_rsrc_name(self, instrument_handle: int, index: int) -> str:
-        """
-        Gets the resource name string needed to open a device with <Initialize>.
 
-        :param instrument_handle: Pass 0 to this parameter.
-        :type instrument_handle: int
-        :param index: The index of the UP device to get the resource descriptor from.
-        :type index: int
-        :return: The resource descriptor.
-        :rtype: str
-
-        :raises NameError: If there is an error during the resource name retrieval.
-
-        Note:
-        (1) The index is zero-based. The maximum index to be used here is one less than the number of UP devices connected.
-            The number of UP devices is available by calling <Find Resource>.
-        """
-        resource_name = ctypes.create_string_buffer(256)
-        status = self._dll.TLUP_getRsrcName(ViSession(instrument_handle),
-                                            ViUInt32(index),
-                                            ctypes.byref(resource_name))
-
-        self.__test_for_error(instrument_handle, status)
-        return resource_name.value.decode()
 
     def measure_device_temperature(self, instrument_handle: int) -> float:
         """
@@ -195,8 +172,27 @@ class TLUP(DLLWrapper):
         status = self._dll.TLUP_measDeviceTemperature(ViSession(instrument_handle),
                                                       ctypes.byref(device_temperature))
 
-        self.__test_for_error(instrument_handle, status)
+        self.__test_for_error(ViSession(instrument_handle), status)
         return device_temperature.value
+    
+    def switch_led_output(self, instrument_handle: int, enable_led_output: bool) -> None:
+        """
+        Enables or disables the LED output.
+        :param instrument_handle: The instrument handle returned by <Initialize> to select the desired instrument driver session.
+        :type instrument_handle: int
+        :param enable_led_output: True to enable the LED output, False to disable the LED output.
+        :type enable_led_output: bool
+
+        :raises NameError: If there is an error during the switching of the LED output.
+
+        Note:
+        This function is valid for UP LED.
+        """
+        status = self._dll.TLUP_switchLedOutput(ViSession(instrument_handle),
+                                                ViBoolean(enable_led_output))
+
+        self.__test_for_error(ViSession(instrument_handle), status)
+        return None
     
 
     def set_led_current_setpoint(self, instrument_handle: int, led_current_setpoint: float) -> None:
@@ -216,17 +212,19 @@ class TLUP(DLLWrapper):
         status = self._dll.TLUP_setLedCurrentSetpoint(ViSession(instrument_handle),
                                                       ViReal64(led_current_setpoint))
 
-        self.__test_for_error(instrument_handle, status)
+        self.__test_for_error(ViSession(instrument_handle), status)
         return None
 
-    def _test_for_error(self, instrument_handle: int, status: ViStatus) -> ViStatus:
+    def __test_for_error(self, instrument_handle, status):
         if status < 0:
-            self._throw_error(ViSession(instrument_handle), status)
-        return status
+            self.__throw_error(instrument_handle, status)
+            
 
-    def _throw_error(self, instrument_handle: ViSession, error_code: ViStatus) -> None:
-        error_msg = ctypes.create_string_buffer(256)
-        self._dll.TLUP_errorMessage(instrument_handle,
-                                    error_code,
-                                    ctypes.byref(error_msg))
-        raise NameError(error_msg.value)
+    def __throw_error(self,instrument_handle, status):
+        error_message = ctypes.create_string_buffer(256)
+        if status < 0:
+            self._dll.TLUP_errorMessage(instrument_handle,
+                                         status, 
+                                         error_message)
+            raise NameError(error_message.value.decode())
+

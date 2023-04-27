@@ -1,0 +1,13 @@
+{
+    "name": "LCC25",
+    "category":"Liquid Crystal Devices",
+    "subcategory": "Controllers",
+    "manufacturer": "Thorlabs",
+    "description": "Liquid crystal controller",
+    "model": "25",
+    "application": "Imaging",
+    "communication": "USB",
+    "manual": "https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=14071",
+    "driver":"tllcc25.py",
+    "info_file":"tllcc25_demo.md"
+}
