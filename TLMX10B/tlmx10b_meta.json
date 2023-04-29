@@ -1,0 +1,13 @@
+{
+    "name": "MX10B",
+    "category":"Communications",
+    "subcategory": "Transmitters",
+    "manufacturer": "Thorlabs",
+    "description": "12.5 Gb/s reference transmitter",
+    "model": "10B",
+    "application": "Telecommunications",
+    "communication": "USB",
+    "manual": "https://www.thorlabs.com/thorproduct.cfm?partnumber=MX10B",
+    "driver":"tlmx10b.py",
+    "info_file":"tlmx10b_demo.md"
+}

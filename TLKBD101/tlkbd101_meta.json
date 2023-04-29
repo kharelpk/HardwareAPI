@@ -1,0 +1,13 @@
+{
+    "name": "KBD101",
+    "category":"Motorized Stages",
+    "subcategory": "Driver",
+    "manufacturer": "Thorlabs",
+    "description": "K-cube brushless DC servo driver.",
+    "model": "KBD101",
+    "application": "Semiconductor",
+    "communication": "USB",
+    "manual": "https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=2419",
+    "driver":"tlpm.py",
+    "info_file":"tlpm_demo.md"
+}

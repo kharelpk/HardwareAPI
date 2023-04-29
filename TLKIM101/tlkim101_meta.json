@@ -1,0 +1,13 @@
+{
+    "name": "KIM101",
+    "category":"Motorized Stages",
+    "subcategory": "Piezo Driver",
+    "manufacturer": "Thorlabs",
+    "description": "K-cube Piezo Interia Motor Controller.",
+    "model": "KIM101",
+    "application": "Semiconductor",
+    "communication": "USB",
+    "manual": "https://www.thorlabs.com/thorproduct.cfm?partnumber=KIM101",
+    "driver":"tlkim101.py",
+    "info_file":"tlkim101_demo.md"
+}

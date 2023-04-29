@@ -1,0 +1,13 @@
+{
+    "name": "KST101",
+    "category":"Motorized Stages",
+    "subcategory": "Controller",
+    "manufacturer": "Thorlabs",
+    "description": "K-cube Stepper Motor Controller.",
+    "model": "KST101",
+    "application": "Imaging",
+    "communication": "USB",
+    "manual": "https://www.thorlabs.com/thorproduct.cfm?partnumber=KST101",
+    "driver":"tlkst101.py",
+    "info_file":"tlkst101_demo.md"
+}
