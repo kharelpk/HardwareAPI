@@ -1,4 +1,3 @@
-Copy code
 ### **Thorlabs Power Meter**
 This Thorlabs Power Meter can be controlled via USB communication.
 
@@ -12,7 +11,8 @@ import time
 from tlpm import TLPM
 
 def main():
-    dll_path = "path/to/your/dll/file.dll"  # Replace with the path to your DLL file
+    dll_path = "path/to/your/dll/file.dll"  # Replace with the path to your DLL file. TLPM_64.dll for 64-bit system and TLPM_32.dll for 32-bit system.
+
     resource_name = "USB0::0x1313::0x8072::P2000000::INSTR"  # Replace with your power meter's resource name
     tlpm = TLPM(dll_path)
 
