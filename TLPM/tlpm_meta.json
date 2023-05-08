@@ -1,0 +1,13 @@
+{
+    "name": "TLPM",
+    "category":"Power Meter",
+    "subcategory": "Optical Power and Energy Meter",
+    "manufacturer": "Thorlabs",
+    "description": "Digital console for optical power and energy measurements.",
+    "model": "PM100-200",
+    "application": "Telecommunications",
+    "communication": "USB",
+    "manual": "https://www.thorlabs.com/thorproduct.cfm?partnumber=PM100D",
+    "driver":"tlpm.py",
+    "info_file":"tlpm_demo.md"
+}

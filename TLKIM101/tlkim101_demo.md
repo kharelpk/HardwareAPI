@@ -2,7 +2,7 @@
 The Thorlabs KIM101 Inertial Motor can be controlled via USB communication.
 
 ### **Prerequisite**
-Please download and install the Thorlabs [Kinesis Software](https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=12033), which installs .dll files necessary to communicate with the inertial motor.
+Please download and install the Thorlabs [Kinesis Software](https://www.thorlabs.com/software_pages/viewsoftwarepage.cfm?code=Motion_Control), which installs .dll files necessary to communicate with the inertial motor.
 
 ### **Example**
 

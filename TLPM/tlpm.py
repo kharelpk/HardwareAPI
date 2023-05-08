@@ -127,8 +127,6 @@ class TLPM(DLLWrapper):
             firmware_revision.value.decode()
         )
 
-
-    
     def set_avg_time(self, instrument_handle: int, average_time: float) -> None:
         """
         Sets the average time for measurement value generation.

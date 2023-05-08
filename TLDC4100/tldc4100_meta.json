@@ -1,0 +1,13 @@
+{
+    "name": "TLDC4100",
+    "category":"Light Sources",
+    "subcategory": "LED Driver",
+    "manufacturer": "Thorlabs",
+    "description": "4 channel LED driver.",
+    "model": "DC4100/DC4104",
+    "application": "Optogentics",
+    "communication": "USB",
+    "manual": "https://www.thorlabs.com/thorproduct.cfm?partnumber=DC4100",
+    "driver":"tldc4100.py",
+    "info_file":"tldc4100_demo.md"
+}

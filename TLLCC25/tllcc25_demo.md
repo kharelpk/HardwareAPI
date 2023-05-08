@@ -12,7 +12,7 @@ from tllcc25 import TLLCC25
 
 
 def main():
-    dll_path = "path/to/your/dll/file.dll"  # Replace with the path to your DLL file
+    dll_path = "path/to/your/dll/file.dll"  # Replace with the path to your DLL file. LCC25CommandLib_win32.dll for 32-bit system.
     tllcc25 = TLLCC25(dll_path)
 
     # List all connected LCC25 devices
@@ -27,7 +27,7 @@ def main():
         # Open the first device
         device_serial, device_port = devices[0]
         baud_rate = 115200
-        timeout = 1000
+        timeout = 3
         handle = tllcc25.open(device_serial, baud_rate, timeout)
         print(f"Opened device {device_serial} with handle {handle}")
 

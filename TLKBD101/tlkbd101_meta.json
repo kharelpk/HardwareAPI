@@ -8,6 +8,6 @@
     "application": "Semiconductor",
     "communication": "USB",
     "manual": "https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=2419",
-    "driver":"tlpm.py",
-    "info_file":"tlpm_demo.md"
+    "driver":"tlkbd101.py",
+    "info_file":"tlkbd101_demo.md"
 }

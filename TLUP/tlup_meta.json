@@ -1,7 +1,7 @@
 {
     "name": "UPLED",
     "category":"Light Sources",
-    "subcategory": "Controllers",
+    "subcategory": "LED Driver",
     "manufacturer": "Thorlabs",
     "description": "Constant Current USB-Controlled LED Driver",
     "model": "upSeries",

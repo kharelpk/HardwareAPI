@@ -22,8 +22,8 @@ class TLLCC25(DLLWrapper):
         super().__init__(dll_path)
 
         self._bind_functions([
-            ("List", [ctypes.POINTER(ctypes.c_ubyte)], ctypes.c_int),
-            ("GetPorts", [ctypes.POINTER(ctypes.c_ubyte)], ctypes.c_int),
+            ("List", [ctypes.c_char_p], ctypes.c_int),
+            ("GetPorts", [ctypes.c_char_p], ctypes.c_int),
             ("Open", [ctypes.c_char_p, ctypes.c_int, ctypes.c_int], ctypes.c_int),
             ("SetOutputMode", [ctypes.c_int, ctypes.c_int], ctypes.c_int),
             ("GetOutputMode", [ctypes.c_int, ctypes.POINTER(ctypes.c_int)], ctypes.c_int),
@@ -34,14 +34,14 @@ class TLLCC25(DLLWrapper):
 
     def list(self) -> List[Tuple[str, str]]:
         """
-        List all connected LCC25 devices.
+        List all ports on this computer.
 
         :return: The LCC25 device list, each device item is a tuple of (serialNumber, COM)
         :rtype: List[Tuple[str, str]]
         """
         serial_no = ctypes.create_string_buffer(1024)
-        result = self._dll.List(ctypes.byref(serial_no))
-        self._test_for_error(result)
+        result = self._dll.List(serial_no)
+        self.__test_for_error(result)
         try:
             devices_str = serial_no.value.decode("utf-8", "ignore").rstrip('\x00').split(',')
             devices = [(devices_str[i], devices_str[i + 1]) for i in range(0, len(devices_str), 2) if devices_str[i]]
@@ -61,8 +61,8 @@ class TLLCC25(DLLWrapper):
         :rtype: str
         """
         serial_no = ctypes.create_string_buffer(1024)
-        result = self._dll.GetPorts(ctypes.byref(serial_no))
-        self._test_for_error(result)
+        result = self._dll.GetPorts(serial_no)
+        self.__test_for_error(result)
 
         return serial_no.value.decode()
     
@@ -81,10 +81,10 @@ class TLLCC25(DLLWrapper):
                 Returns a negative number if unsuccessful.
         :rtype: int
         """
-        result = self._dll.Open(ctypes.c_char_p(serial_no.encode()), 
+        result = self._dll.Open(serial_no.encode('utf-8'), 
                                 ctypes.c_int(n_baud), 
                                 ctypes.c_int(timeout))
-        self._test_for_error(result)
+        self.__test_for_error(result)
 
         return result
 
@@ -103,7 +103,7 @@ class TLLCC25(DLLWrapper):
         :rtype: int
         """
         result = self._dll.SetOutputMode(ctypes.c_int(hdl), ctypes.c_int(mode))
-        self._test_for_error(result)
+        self.__test_for_error(result)
 
         return result
     
@@ -122,7 +122,7 @@ class TLLCC25(DLLWrapper):
         """
         output_mode = ctypes.c_int()
         result = self._dll.GetOutputMode(ctypes.c_int(hdl), ctypes.byref(output_mode))
-        self._test_for_error(result)
+        self.__test_for_error(result)
 
         return output_mode.value
     
@@ -142,7 +142,7 @@ class TLLCC25(DLLWrapper):
         :rtype: int
         """
         result = self._dll.SetVoltage1(ctypes.c_int(hdl), ctypes.c_double(vol))
-        self._test_for_error(result)
+        self.__test_for_error(result)
 
         return result
 
@@ -161,7 +161,7 @@ class TLLCC25(DLLWrapper):
         :rtype: int
         """
         result = self._dll.SetVoltage2(ctypes.c_int(hdl), ctypes.c_double(vol))
-        self._test_for_error(result)
+        self.__test_for_error(result)
 
         return result
 
@@ -175,12 +175,12 @@ class TLLCC25(DLLWrapper):
         :rtype: int
         """
         result = self._dll.Close(ctypes.c_int(hdl))
-        self._test_for_error(result)
+        self.__test_for_error(result)
 
         return result
 
 
 
-    def _test_for_error(self, result):
+    def __test_for_error(self, result):
         if result < 0:
             raise Exception("Command execution failed. " + str(result))

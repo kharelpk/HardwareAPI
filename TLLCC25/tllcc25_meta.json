@@ -7,7 +7,7 @@
     "model": "25",
     "application": "Imaging",
     "communication": "USB",
-    "manual": "https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=14071",
+    "manual": "https://www.thorlabs.com/software_pages/viewsoftwarepage.cfm?code=LCC25",
     "driver":"tllcc25.py",
     "info_file":"tllcc25_demo.md"
 }

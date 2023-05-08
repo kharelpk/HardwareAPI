@@ -21,9 +21,6 @@ def main():
     # Home the KBD101 device
     motor.home()
 
-    # Set motor parameters (counts per revolution)
-    motor.set_motor_params(40000.0)
-
     # Set velocity parameters in real units (acceleration and max velocity)
     motor.set_velocity_parameters_real_units(5.0, 20.0)
 
@@ -49,7 +46,6 @@ This example code does the following:
     - Creates an instance of the TLKBD101 class with the given serial number and path to the DLL files.
     - Connects to the KBD101 device.
     - Homes the KBD101 device.
-    - Sets motor parameters (counts per revolution).
     - Sets velocity parameters in real units (acceleration and max velocity).
     - Moves the motor to the given position in real units.
     - Gets the current position of the motor.
